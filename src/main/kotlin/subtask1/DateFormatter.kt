@@ -1,5 +1,8 @@
 package subtask1
 
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.reflect.KClass
 
 class DateFormatter {
@@ -47,7 +50,7 @@ class DateFormatter {
         c.time = date
         val month = c[Calendar.MONTH]
         val dayOfWeek = c[Calendar.DAY_OF_WEEK]
-        return months.get(month) + " " + days.get(dayOfWeek)
+        return months.get(month) + ", " + days.get(dayOfWeek)
     }
 
 
