@@ -49,21 +49,25 @@ class Blocks {
     }
 
     fun getRequredData(blockA: Array<*>, blockB: KClass<*>): ArrayList<Any>{
-
         var data = ArrayList<Any>(blockA.size)
-        if(blockB.toString() != "class kotlin.Int") {
-            data.addAll(blockA.filterIsInstance(blockB.java))
-        }
-        else
-        {
-            for (elem in blockA)
-            {
-                if (elem is Int)
+
+        when(blockB){
+            Int::class -> {
+
+                for (elem in blockA)
                 {
-                    data.add(elem as Int)
+                    if (elem is Int)
+                    {
+                        data.add(elem as Int)
+                    }
                 }
+                return data
             }
         }
+
+        data.addAll(blockA.filterIsInstance(blockB.java))
+
+
 
         return data
     }
