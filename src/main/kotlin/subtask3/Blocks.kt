@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter
 import kotlin.reflect.KClass
 
 class Blocks {
-
     fun getData(blockA: Array<*>, blockB: KClass<*>): Any {
         val onlyRequredData = getRequredData(blockA, blockB)
         var resultInt: Int = 0
@@ -13,9 +12,9 @@ class Blocks {
         var resultDate: LocalDate
 
 
-        val name = blockB.simpleName
+        val name = blockB.java.name
 
-        if (name == "String")
+        if (name == "java.lang.String")
         {
             for(elem in onlyRequredData)
             {
@@ -24,7 +23,7 @@ class Blocks {
             }
             return resultString
         }
-        else if(name == "Int")
+        else if(name == "int")
         {
             for(elem in onlyRequredData)
             {
@@ -32,7 +31,7 @@ class Blocks {
             }
             return resultInt
         }
-        else
+        else if (name == "java.time.LocalDate")
         {
             var bufferDate: LocalDate
             bufferDate = onlyRequredData.get(0) as LocalDate
@@ -46,20 +45,28 @@ class Blocks {
             val simpleDateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             return bufferDate.format(simpleDateFormat)
         }
+        return -1
     }
 
     fun getRequredData(blockA: Array<*>, blockB: KClass<*>): ArrayList<Any>{
 
         var data = ArrayList<Any>(blockA.size)
-
-        for (elem in blockA)
+        if(blockB.toString() != "class kotlin.Int") {
+            data.addAll(blockA.filterIsInstance(blockB.java))
+        }
+        else
         {
-            if(blockB.isInstance(elem))
+            for (elem in blockA)
             {
-                data.add(elem!!)
+                if (elem is Int)
+                {
+                    data.add(elem as Int)
+                }
             }
         }
 
         return data
     }
+
+
 }
